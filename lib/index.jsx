@@ -15,6 +15,7 @@ import {
   addListenerPrefersColorScheme,
   renderChart
 } from './util'
+import 'antd/dist/reset.css'
 
 const { Sider, Content } = Layout
 const { Title, Text } = Typography
