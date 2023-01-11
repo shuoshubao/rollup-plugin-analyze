@@ -5,6 +5,7 @@ A visualizer rollup analyzer
 # Examples
 
 - https://shuoshubao.github.io/rollup-plugin-analyze
+- https://shuoshubao.github.io/stats.html
 
 # Install
 
@@ -17,7 +18,7 @@ npm i D rollup-plugin-analyze
 ## rollup.config.js
 
 ```js
-const Analysis = require('rollup-plugin-analyze')
+const Analyze = require('rollup-plugin-analyze')
 
 module.exports = {
   input: 'lib/index.jsx',
@@ -25,6 +26,19 @@ module.exports = {
     file: 'dist/index.js',
     format: 'iife'
   },
-  plugins: [Analysis()]
+  plugins: [Analyze()]
+}
+```
+
+## vite.config.js
+
+```js
+import react from '@vitejs/plugin-react'
+import Analyze from 'rollup-plugin-analyze'
+
+export default () => {
+  return {
+    plugins: [react(), Analyze()]
+  }
 }
 ```

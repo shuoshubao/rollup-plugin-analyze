@@ -16,7 +16,9 @@
   "keywords": [
     "rollup",
     "plugin",
-    "analyzer"
+    "analyze",
+    "analyzer",
+    "analysis"
   ],
   "scripts": {
     "start": "esbuild lib/index.jsx  --outdir=dist --bundle --watch",
