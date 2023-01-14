@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-analyze",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A visualizer rollup analyzer",
   "files": [
     "dist",
