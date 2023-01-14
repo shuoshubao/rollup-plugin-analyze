@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ConfigProvider, Layout, Typography, Checkbox, theme } from 'antd'
+import { ConfigProvider, Layout, Typography, Checkbox, Input, theme } from 'antd'
 import { Resizable } from 're-resizable'
 import * as echarts from 'echarts/core'
 import { map, add } from 'lodash-es'
+import 'antd/dist/reset.css'
 import {
   StatsData,
   SizeKey,
@@ -15,7 +16,6 @@ import {
   addListenerPrefersColorScheme,
   renderChart
 } from './util'
-import 'antd/dist/reset.css'
 
 const { Sider, Content } = Layout
 const { Title, Text } = Typography
@@ -39,12 +39,15 @@ const App = () => {
   const [indeterminate, setIndeterminate] = useState(false)
   const [checkAll, setCheckAll] = useState(true)
 
+  const [query, setQuery] = useState('')
+
   const onCheckedChange = list => {
     setCheckedChunks(list)
     setIndeterminate(!!list.length && list.length < chunksList.length)
     setCheckAll(list.length === chunksList.length)
     renderChart(chartRef, {
-      checkedChunks: list
+      checkedChunks: list,
+      query
     })
   }
 
@@ -54,7 +57,8 @@ const App = () => {
     setIndeterminate(false)
     setCheckAll(checked)
     renderChart(chartRef, {
-      checkedChunks: checked ? chunksList : []
+      checkedChunks: checked ? chunksList : [],
+      query
     })
   }
 
@@ -66,7 +70,10 @@ const App = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      renderChart(chartRef, { checkedChunks })
+      renderChart(chartRef, {
+        checkedChunks,
+        query
+      })
     }, 0)
   }, [chartRef])
 
@@ -145,6 +152,21 @@ const App = () => {
                   )
                 })}
               </CheckboxGroup>
+              <Title level={4}>Search modules:</Title>
+              <Input
+                value={query}
+                onChange={e => {
+                  const value = e.target.value.trim()
+                  setQuery(value)
+                  renderChart(chartRef, {
+                    checkedChunks,
+                    query: value
+                  })
+                }}
+                size="middle"
+                allowClear
+                placeholder="Entry path or name"
+              />
             </div>
           </Sider>
         </Resizable>
