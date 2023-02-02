@@ -1,7 +1,7 @@
 const { readFileSync, writeFileSync } = require('fs')
 const { resolve } = require('path')
 const { deflateRaw } = require('pako')
-const { name, version } = require('./package')
+const { name } = require('./package')
 
 const deflateData = data => {
   return deflateRaw(JSON.stringify(data || {}).toString())
@@ -17,6 +17,8 @@ const pick = (obj, ...props) => {
 const getFileContent = fileName => {
   return readFileSync(resolve(__dirname, fileName)).toString()
 }
+
+const unpkgPrefix = `https://unpkg.com/${name}@latest`
 
 module.exports = (options = {}) => {
   const { filename = 'stats.html' } = options
@@ -39,8 +41,8 @@ module.exports = (options = {}) => {
       })
 
       const html = getFileContent('index.html')
-        .replace('dist/index.css', `https://unpkg.com/${name}@${version}/dist/index.css`)
-        .replace('dist/index.js', `https://unpkg.com/${name}@${version}/dist/index.js`)
+        .replace('dist/index.css', `${unpkgPrefix}/dist/index.css`)
+        .replace('dist/index.js', `${unpkgPrefix}/dist/index.js`)
         .replace('<script src="docs/StatsData.js">', `<script>window.StatsData = '${deflateData(data)}'`)
 
       writeFileSync(filename, html)
