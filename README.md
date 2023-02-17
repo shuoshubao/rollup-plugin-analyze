@@ -10,7 +10,7 @@ A visualizer rollup analyzer
 # Install
 
 ```sh
-npm i D rollup-plugin-analyze
+npm i -D rollup-plugin-analyze
 ```
 
 # Usage
