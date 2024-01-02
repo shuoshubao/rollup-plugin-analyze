@@ -1,17 +1,11 @@
 const { readFileSync, writeFileSync } = require('fs')
 const { resolve } = require('path')
 const { deflateRaw } = require('pako')
+const { pick, chunk } = require('lodash')
 const { name } = require('./package')
 
 const deflateData = data => {
   return deflateRaw(JSON.stringify(data || {}).toString())
-}
-
-const pick = (obj, ...props) => {
-  return props.reduce((result, prop) => {
-    result[prop] = obj[prop]
-    return result
-  }, {})
 }
 
 const getFileContent = fileName => {
@@ -40,10 +34,16 @@ module.exports = (options = {}) => {
         }
       })
 
+      const arrText = chunk(String(deflateData(data)).split(','), 100)
+        .map(v => {
+          return v.join(', ')
+        })
+        .join(',\n')
+
       const html = getFileContent('index.html')
         .replace('dist/index.css', `${unpkgPrefix}/dist/index.css`)
         .replace('dist/index.js', `${unpkgPrefix}/dist/index.js`)
-        .replace('<script src="docs/StatsData.js">', `<script>window.StatsData = '${deflateData(data)}'`)
+        .replace('<script src="docs/StatsData.js">', `<script>\nwindow.StatsData = [${arrText}]\n`)
 
       writeFileSync(filename, html)
 
